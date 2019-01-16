@@ -1,1 +1,2 @@
 machines-enabled/*.nix
+hardware-configuration.nix
