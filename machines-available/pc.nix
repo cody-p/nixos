@@ -32,6 +32,7 @@
         steam
         rustup
         gcc
+        blender
     ];
     
     fileSystems."/storage" =
