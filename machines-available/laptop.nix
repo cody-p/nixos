@@ -2,4 +2,9 @@
 
 {
     networking.hostName = "Meiko";
+    services = {
+        xserver = {
+            videoDrivers = [ "intel" ];
+        };
+    };
 }

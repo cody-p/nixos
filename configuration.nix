@@ -63,6 +63,11 @@
             libreoffice
             figlet
             qdirstat
+            xfce.thunar-archive-plugin
+            whois
+            xarchiver
+            unzip
+            galculator
         ];
         interactiveShellInit = ''
             neofetch | lolcat
@@ -80,11 +85,7 @@
 
     sound.enable = true;
     system = {
-        autoUpgrade = {
-            enable = true;
-            channel = https://nixos.org/channels/nixos-unstable;
-        };
-        #stateVersion = "18.09";
+        stateVersion = "18.09";
     };
     
     services = {
@@ -109,8 +110,7 @@
                 accelProfile = "flat";
             };
             displayManager = {
-                gdm = {
-                    wayland = false;
+                lightdm = {
                     enable = true;
                 };
             };
@@ -123,7 +123,7 @@
                 package = pkgs.i3-gaps;
                 configFile = pkgs.fetchurl {
                     url = "https://raw.githubusercontent.com/cody-p/dotfiles/master/i3/config";
-                    sha256 = "6bdc35a96ce9ece7f4b45b429e9ada8b6f208f5418fe22a06a1054e5aa91f414";
+                    sha256 = "e9a40bca02562353fddf3e02522020c6b58e0bbc203c2e8018e4359426d2652a";
                 };
             };
         };
