@@ -20,7 +20,11 @@
     };
 
     networking = {
-        nameservers = [ "8.8.8.8" ];
+        nameservers = [ 
+            "208.67.222.222"
+            "208.67.220.220"
+            "8.8.8.8"     
+        ];
         networkmanager = {
             enable = true;
         };
@@ -68,6 +72,9 @@
             xarchiver
             unzip
             galculator
+            youtube-dl
+            mosh
+            aseprite
         ];
         interactiveShellInit = ''
             neofetch | lolcat
@@ -123,7 +130,7 @@
                 package = pkgs.i3-gaps;
                 configFile = pkgs.fetchurl {
                     url = "https://raw.githubusercontent.com/cody-p/dotfiles/master/i3/config";
-                    sha256 = "e9a40bca02562353fddf3e02522020c6b58e0bbc203c2e8018e4359426d2652a";
+                    sha256 = "c178af6eba7955d144209576870f297eb15c96e48cb4e84f250b77f364e7ddcc";
                 };
             };
         };
