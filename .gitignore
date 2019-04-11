@@ -1,2 +1,2 @@
-machines-enabled/*.nix
+configuration.nix
 hardware-configuration.nix

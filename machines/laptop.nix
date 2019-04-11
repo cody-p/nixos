@@ -5,6 +5,11 @@
     services = {
         xserver = {
             videoDrivers = [ "intel" ];
+            wacom.enable = true;
         };
     };
+    
+    environment.systemPackages = with pkgs; [
+        libwacom
+    ];
 }

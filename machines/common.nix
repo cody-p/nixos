@@ -1,12 +1,6 @@
 { config, pkgs, ... }:
 
 {
-    imports =
-    [
-        ./hardware-configuration.nix # hardware-scan, do not modify.
-        ./machines-enabled
-    ];
-
     boot = {
         loader = { 
             systemd-boot.enable = true;
@@ -62,7 +56,7 @@
             xfce.xfce4-taskmanager
             htop
             tilix
-            python
+            python37Full
             gnome3.gedit
             libreoffice
             figlet
@@ -75,6 +69,7 @@
             youtube-dl
             mosh
             aseprite
+            krita
         ];
         interactiveShellInit = ''
             neofetch | lolcat
@@ -144,7 +139,7 @@
     };
     
     users.users = {
-        cody = {
+        katie = {
             isNormalUser = true;
             extraGroups = [ "wheel" ];
         };
