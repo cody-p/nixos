@@ -70,6 +70,12 @@
             mosh
             aseprite
             krita
+            evince
+            redshift
+            gimp
+            deadbeef
+            xorg.xmodmap
+            xorg.xev
         ];
         interactiveShellInit = ''
             neofetch | lolcat

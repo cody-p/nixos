@@ -48,7 +48,14 @@
     
     hardware = {
         cpu.intel.updateMicrocode = true;
-        nvidia.modesetting.enable = true;
+        nvidia = {
+            modesetting.enable = true;
+            optimus_prime = {
+                enable = true;
+                nvidiaBusId = "PCI:2:0:0";
+                intelBusId = "PCI:0:2:0";
+            };
+        };
         opengl = {
             driSupport32Bit = true;
             extraPackages = [ pkgs.linuxPackages.nvidia_x11.out ];
