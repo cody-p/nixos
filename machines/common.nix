@@ -22,6 +22,13 @@
         networkmanager = {
             enable = true;
         };
+        
+        firewall = {
+            enable = true;
+            allowedTCPPorts = [ 
+                21025 # starbound
+            ];
+        };
     };
     
     time.timeZone = "America/Los_Angeles";
@@ -76,6 +83,8 @@
             deadbeef
             xorg.xmodmap
             xorg.xev
+            pa_applet
+            tiled
         ];
         interactiveShellInit = ''
             neofetch | lolcat
@@ -131,7 +140,7 @@
                 package = pkgs.i3-gaps;
                 configFile = pkgs.fetchurl {
                     url = "https://raw.githubusercontent.com/cody-p/dotfiles/master/i3/config";
-                    sha256 = "c178af6eba7955d144209576870f297eb15c96e48cb4e84f250b77f364e7ddcc";
+                    sha256 = "1b8b1e69b2b1d864491c3aee662f8186b53367cf0ece90dc5f71553549602c0b";
                 };
             };
         };

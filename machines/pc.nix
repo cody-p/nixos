@@ -32,6 +32,8 @@
         rustup
         gcc
         blender
+        mumble
+        lmms
     ];
     
     fileSystems."/storage" =
@@ -51,9 +53,9 @@
         nvidia = {
             modesetting.enable = true;
             optimus_prime = {
-                enable = true;
-                nvidiaBusId = "PCI:2:0:0";
-                intelBusId = "PCI:0:2:0";
+                enable = false;
+                #nvidiaBusId = "PCI:2:0:0";
+                #intelBusId = "PCI:0:2:0";
             };
         };
         opengl = {
