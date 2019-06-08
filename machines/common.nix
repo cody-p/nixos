@@ -154,6 +154,7 @@
     };
     
     users.users = {
+        mutableUsers=true;
         katie = {
             isNormalUser = true;
             extraGroups = [ "wheel" ];
