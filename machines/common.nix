@@ -85,6 +85,7 @@
             xorg.xev
             pa_applet
             tiled
+            ntfs3g
         ];
         interactiveShellInit = ''
             neofetch | lolcat
@@ -153,14 +154,16 @@
         };
     };
     
-    users.users = {
-        mutableUsers=true;
-        katie = {
-            isNormalUser = true;
-            extraGroups = [ "wheel" ];
+    users ={ 
+        users = {
+            katie = {
+                isNormalUser = true;
+                extraGroups = [ "wheel" ];
+            };
+            guest = {
+                isNormalUser = true;
+            };
         };
-        guest = {
-            isNormalUser = true;
-        };
+        mutableUsers = true;
     };
 }
