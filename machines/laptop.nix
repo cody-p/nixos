@@ -11,5 +11,10 @@
     
     environment.systemPackages = with pkgs; [
         libwacom
+        blueman
     ];
+
+    hardware.bluetooth = {
+        enable = true;
+    };
 }
