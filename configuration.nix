@@ -6,6 +6,7 @@
 		./hardware-configuration.nix # hardware-scan, do not modify
 	];
 
+
 	#fileSystems."/storage" = {
 	#	device = "/dev/disk/by-uuid/ca3a963f-dc56-4c4c-9d99-3ec7b057fbac";
 	#	fsType = "btrfs";
@@ -56,7 +57,10 @@
 		hardwareClockInLocalTime = true;
 	};
 	
-	nixpkgs.config.allowUnfree = true;
+	nixpkgs = {
+		config.allowUnfree = true;
+		#overlays = [ (import "/home/user/projects/git/nixos/overlays") ];
+	};
 
 	environment = {
 		systemPackages = with pkgs; [
@@ -128,6 +132,10 @@
 			compton
 			mumble
 			teamviewer
+			xwinwrap
+			xscreensaver
+			mpv
+			sl
 
 			#kde packages
 			#kate
@@ -142,6 +150,7 @@
 			xfce4-14.thunar
 			xfce4-14.xfce4-clipman-plugin
 			xfce4-14.xfce4-notifyd
+			xfce4-14.xfce4-power-manager
 			redshift
 			gksu
 			galculator
@@ -201,7 +210,6 @@
 			layout = "us";
 			videoDrivers = [ "nvidia" ];
 			#wacom.enable = true;
-
 			desktopManager = {
 				#default = "xfce";
 				xterm.enable = false;
