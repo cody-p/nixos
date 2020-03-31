@@ -125,7 +125,6 @@
 			vscode
 			wine
 			unrar
-			keepassxc
 			btrfsProgs
 			p7zip
 			zoom-us
@@ -136,6 +135,7 @@
 			xscreensaver
 			mpv
 			sl
+			gnome3.file-roller
 
 			#kde packages
 			#kate
@@ -166,7 +166,7 @@
 			neofetch | lolcat
 		'';
 		variables = {
-			EDITOR="gedit";
+			EDITOR="mousepad";
 			TERMINAL="tilix";
 		};
 	};
