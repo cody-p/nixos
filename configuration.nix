@@ -2,295 +2,155 @@
 
 {
 	imports =
-	[
-		./hardware-configuration.nix # hardware-scan, do not modify
+	[	./hardware-configuration.nix
 	];
-
-
-	#fileSystems."/storage" = {
-	#	device = "/dev/disk/by-uuid/ca3a963f-dc56-4c4c-9d99-3ec7b057fbac";
-	#	fsType = "btrfs";
-	#	options = [ "nofail" ];
-	#};
 	
-	fileSystems."/backup" = {
-		device = "/dev/disk/by-uuid/6676b843-04f7-4c37-a9c0-c571af01cec8";
-		fsType = "ext4";
-		options = [ "nofail" ];
-	};
-	
-	boot = {
-		loader = { 
-			systemd-boot.enable = true;
+	boot =
+	{	loader =
+		{ 	systemd-boot.enable = true; 
 			efi.canTouchEfiVariables = true;
 		};
 		kernelParams = [ "intel_iommu=on" ];
+		kernelModules = [ "kvm-intel" ];
+		extraModprobeConfig = "options bbswitch load_state=-1 unload_state=1 nvidia-drm";
 	};
 
-	i18n = {
-	   consoleKeyMap = "us";
-	   defaultLocale = "en_US.UTF-8";
-	};
-
+	console.keyMap = "us";
 	
-	networking = {
-		hostName = "Meiko";
-		nameservers = [ 
-			"208.67.222.222"
-			"208.67.220.220"
-			"8.8.8.8"	 
-		];
-		networkmanager = {
-			enable = true;
-		};
-		
-		firewall = {
-			enable = true;
-			allowedTCPPorts = [ 
-				21025 # starbound
-			];
-		};
-	};
-	
-	time = {
-		timeZone = "America/Los_Angeles";
-		hardwareClockInLocalTime = true;
-	};
-	
-	nixpkgs = {
-		config.allowUnfree = true;
-		#overlays = [ (import "/home/user/projects/git/nixos/overlays") ];
-	};
-
-	environment = {
-		systemPackages = with pkgs; [
-			firefox
-			thunderbird
-			pasystray
-			pavucontrol
-			wget
-			git
-			nano
-			sudo
-			pciutils
-			neofetch
-			killall
-			keepassx2
-			rsync
-			glxinfo 
-			nitrogen
-			gparted
-			lolcat
-			cowsay
-			fortune
-			arandr
-			htop
-			tilix
-			python37Full
-			libreoffice
-			figlet
-			qdirstat
-			whois
-			xarchiver
-			unzip
-			youtube-dl
-			mosh
-			aseprite
-			krita
-			evince
-			gimp
-			deadbeef
-			xorg.xmodmap
-			xorg.xev
-			pa_applet
-			tiled
-			ntfs3g
-			tor-browser-bundle-bin
-			qbittorrent
-			appimage-run
-			steam
-			blender
-			hdparm
-			godot
-			ffmpeg
-			peek
-			virtmanager
-			vlc
-			OVMF
-			obs-studio
-			spotify
-			cargo
-			gitg
-			discord
-			vscode
-			wine
-			unrar
-			btrfsProgs
-			p7zip
-			zoom-us
-			compton
-			mumble
-			teamviewer
-			xwinwrap
-			xscreensaver
-			mpv
-			sl
-			gnome3.file-roller
-
-			#kde packages
-			#kate
-			#kdesu
-			#ksuperkey
-
-			#xfce packages
-			xfce4-14.xfce4-panel
-			xfce4-14.xfce4-settings
-			xfce4-14.xfce4-whiskermenu-plugin
-			xfce4-14.xfce4-taskmanager
-			xfce4-14.thunar
-			xfce4-14.xfce4-clipman-plugin
-			xfce4-14.xfce4-notifyd
-			xfce4-14.xfce4-power-manager
-			redshift
-			gksu
-			galculator
+	environment =
+	{	systemPackages = with pkgs;
+		[	#things that gnome doesn't need i think
+			#arandr	compton	nitrogen pasystray pavucontrol redshift
+			#xscreensaver xwinwrap gnome3.file-roller
+			#gnome3.gedit gnome3.gnome-tweak-tool pa_applet evince xarchiver
 			
-			#gnome packages
-			#gnome3.gedit
-			#gnome3.gnome-tweak-tool
-			#gnomeExtensions.dash-to-panel
-			#gnomeExtensions.appindicator
-			#gedit
+			OVMF appimage-run aseprite blender btrfsProgs cargo cowsay deadbeef discord ffmpeg figlet firefox fortune gimp git gitg gksu glxinfo  gparted hdparm htop keepassx2 killall krita libreoffice lolcat mosh mpv mumble nano neofetch ntfs3g obs-studio p7zip pciutils peek  qbittorrent qdirstat rsync sl spotify steam sudo thunderbird tiled tilix unrar unzip virtmanager vlc vscode wget whois wine xorg.xev youtube-dl zoom-us home-manager
+			
+			gnomeExtensions.appindicator gnomeExtensions.paperwm
+			python38 python38Packages.discordpy
+			
 		];
-		interactiveShellInit = ''
-			neofetch | lolcat
-		'';
-		variables = {
-			EDITOR="mousepad";
+		interactiveShellInit = ''neofetch | lolcat'';
+		variables =
+		{	EDITOR="gedit";
 			TERMINAL="tilix";
 		};
 	};
 	
-	programs = {
-		dconf.enable = true;
-		ssh.askPassword = "";
-	};
-
-	sound.enable = true;
-	system = {
-		stateVersion = "19.09";
-	};
-	
-	services = {
-		blueman.enable = true;
-		localtime.enable = true;
-		logind = {
-			lidSwitch = "lock";
-			lidSwitchDocked = "ignore";
-			lidSwitchExternalPower = "lock";
-		};
-	#openssh = {
-		#	enable = false;
-		#	allowSFTP = true;
-		#	passwordAuthentication = false;
-		#	permitRootLogin = "no";
-		#	ports = [
-		#		4292
-		#	];
-		#};
-
-		qemuGuest.enable = true;
-		dbus.packages = with pkgs; [ 
-			xfce.dconf
-		];
-		xserver = {
-			enable = true;
-			exportConfiguration = true;
-			#dpi = 192;
-			layout = "us";
-			videoDrivers = [ "nvidia" ];
-			#wacom.enable = true;
-			desktopManager = {
-				#default = "xfce";
-				xterm.enable = false;
-				xfce4-14 = {
-					enable = true;
-					noDesktop = true;
-					enableXfwm = false;
-				};
-				
-			};
-
-			libinput = {
-				enable = true;
-				accelSpeed = "0";
-				accelProfile = "flat";
-			};
-			displayManager = {
-				lightdm = {
-					enable = true;
-				};
-			};
-			windowManager.i3 = {
-				enable = true;
-				extraPackages = with pkgs; [
-					dmenu
-					i3lock
-				];
-				package = pkgs.i3-gaps;
-				configFile = "/home/user/dotfiles/i3/main";
-			};
-		};
-	};
-
-	virtualisation = {
-		libvirtd = {
-			enable = true;
-			qemuOvmf = true;
-		};
-	};
-	users ={ 
-		users = {
-			user = {
-				isNormalUser = true;
-				extraGroups = [ "wheel" "networkmanager" ];
-			};
-			guest = {
-				isNormalUser = true;
-			};
-		};
-		mutableUsers = true;
-	};
-
-	hardware = {
-		steam-hardware.enable = true;
+	hardware =
+	{	steam-hardware.enable = true;
+		enableAllFirmware = true;
 		cpu.intel.updateMicrocode = true;
-	pulseaudio = {
-			enable = true;
+		video.hidpi.enable = true;
+		pulseaudio =
+		{	enable = true;
 			support32Bit = true;
 			package = pkgs.pulseaudioFull;
 		};
-		nvidia = {
-			modesetting.enable = true;
-			optimus_prime = {
-				enable = true;
-				intelBusId = "PCI:0:2:0";
+		nvidia =
+		{	modesetting.enable = true;
+			prime =
+			{	intelBusId = "PCI:0:2:0";
 				nvidiaBusId = "PCI:1:0:0";
+				sync =
+				{	enable = true;
+					allowExternalGpu = false;
+				};
 			};
 		};
 
-		opengl = {
-			driSupport32Bit = true;
+		opengl =
+		{	driSupport32Bit = true;
 			extraPackages = [ pkgs.linuxPackages.nvidia_x11.out ];
 		};
 
-	enableAllFirmware = true;
-	bluetooth = {
-			enable = true;
+		bluetooth =
+		{	enable = true;
 			package = pkgs.bluezFull;
 		};
 	};
-
+	
+	i18n =
+	{	defaultLocale = "en_US.UTF-8";
+		supportedLocales = [ "en_US.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8" ];
+	};
+	
+	networking =
+	{	hostName = "Meiko";
+		hostId = "6d505eb1";
+		nameservers = [ "208.67.222.222" "208.67.220.220" "8.8.8.8" ];
+		networkmanager.enable = true;
+		firewall =
+		{	enable = true;
+			allowedTCPPorts =
+			[ 	21025 #starbound
+			];
+		};
+	};
+	
+	nixpkgs.config.allowUnfree = true;
+	
 	powerManagement.cpuFreqGovernor = "ondemand";
+	
+	programs =
+	{	dconf.enable = true;
+		ssh.askPassword = "";
+	};
+	
+	services =
+	{	blueman.enable = true;
+		localtime.enable = true;
+		hardware.bolt.enable=true;
+		logind =
+		{	lidSwitch = "lock";
+			lidSwitchDocked = "ignore";
+			lidSwitchExternalPower = "lock";
+		};
+		qemuGuest.enable = true;
+		xserver =
+		{	enable = true;
+			exportConfiguration = true;
+			dpi = 192;
+			layout = "us";
+			videoDrivers = [ "nvidia" ];
+			desktopManager =
+			{	xterm.enable = false;
+				gnome3.enable = true;
+			};
+
+			libinput =
+			{	enable = true;
+				accelSpeed = "0";
+				accelProfile = "flat";
+			};
+			displayManager.lightdm.enable = true;
+		};
+	};
+
+	sound.enable = true;
+	
+	time =
+	{	timeZone = "America/Los_Angeles";
+		hardwareClockInLocalTime = true;
+	};
+	
+	users =
+	{	users =
+		{	user =
+			{	isNormalUser = true;
+				extraGroups = [ "wheel" "networkmanager" "kvm" "input" ];
+			};
+			guest.isNormalUser = true;
+		};
+		mutableUsers = true;
+	};
+	
+	virtualisation.libvirtd =
+	{	enable = true;
+		qemuOvmf = true;
+		qemuRunAsRoot = false;
+		onBoot = "ignore";
+		onShutdown = "shutdown";
+	};
 }
 
