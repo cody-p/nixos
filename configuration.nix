@@ -1,14 +1,41 @@
 { config, pkgs, ... }:
 
+let
+  home-manager = builtins.fetchGit {
+    url = "https://github.com/nix-community/home-manager.git";
+    #rev = "dd94a849df69fe62fe2cb23a74c2b9330f1189ed"; # CHANGEME 
+    ref = "release-20.09";
+  };
+in
 {
 	imports =
 	[	./hardware-configuration.nix
+		(import "${home-manager}/nixos")
 	];
 	
+	home-manager.users.user = {
+		programs = {
+			home-manager.enable = true;
+			git = {
+			    enable = true;
+			    userName = "kt-void";
+			    userEmail = "professional@voidlurker.net";
+			};
+	    	};
+    	};
+    	
 	boot =
 	{	loader =
-		{ 	systemd-boot.enable = true; 
-			efi.canTouchEfiVariables = true;
+		{ 	grub = {
+				enable = true; 
+				devices = [ "nodev" ];
+				efiSupport = true;
+				useOSProber = true;
+			};
+			efi = {
+				canTouchEfiVariables = true;
+				efiSysMountPoint = "/boot";
+			};
 		};
 		kernelParams = [ "intel_iommu=on" ];
 		kernelModules = [ "kvm-intel" ];
@@ -24,7 +51,7 @@
 			#xscreensaver xwinwrap gnome3.file-roller
 			#gnome3.gedit gnome3.gnome-tweak-tool pa_applet evince xarchiver
 			
-			OVMF appimage-run aseprite blender btrfsProgs cargo cowsay deadbeef discord ffmpeg figlet firefox fortune gimp git gitg gksu glxinfo  gparted hdparm htop keepassx2 killall krita libreoffice lolcat mosh mpv mumble nano neofetch ntfs3g obs-studio p7zip pciutils peek  qbittorrent qdirstat rsync sl spotify steam sudo thunderbird tiled tilix unrar unzip virtmanager vlc vscode wget whois wine xorg.xev youtube-dl zoom-us home-manager
+			OVMF appimage-run aseprite blender btrfsProgs cargo cowsay deadbeef discord ffmpeg figlet fortune gimp git gitg gksu glxinfo  gparted hdparm htop insync keepassx2 killall krita libreoffice lolcat mkpasswd mosh mpv mumble nano neofetch ntfs3g obs-studio p7zip pciutils peek  qbittorrent qdirstat rsync sl spotify steam sudo thunderbird tiled tilix unrar unzip virtmanager vlc vscode wget whois wine xorg.xev youtube-dl zoom-us google-chrome
 			
 			gnomeExtensions.appindicator gnomeExtensions.paperwm
 			python38 python38Packages.discordpy
@@ -129,6 +156,10 @@
 
 	sound.enable = true;
 	
+	system = {
+		autoUpgrade.channel = "https://nixos.org/channels/nix-latest";
+	};
+	
 	time =
 	{	timeZone = "America/Los_Angeles";
 		hardwareClockInLocalTime = true;
@@ -138,11 +169,13 @@
 	{	users =
 		{	user =
 			{	isNormalUser = true;
+				home = "/home/user";
 				extraGroups = [ "wheel" "networkmanager" "kvm" "input" ];
+				hashedPassword = "$6$ykg2p//EnCnp$H5I.fVnf45tEiuWqa0p5nnqBFquJfTR.Mg7pb2VnzBicG3HiNe427WiTAwtGXqzOJtI9RfpRQiNoQKlJ34eOa/";
 			};
 			guest.isNormalUser = true;
 		};
-		mutableUsers = true;
+		mutableUsers = false;
 	};
 	
 	virtualisation.libvirtd =
